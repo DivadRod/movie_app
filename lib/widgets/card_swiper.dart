@@ -21,9 +21,9 @@ class CardSwiper extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: const FadeInImage(
-                placeholder:
-                    NetworkImage('https://via.placeholder.com/300x400'),
-                image: NetworkImage('https://via.placeholder.com/300x400'),
+                placeholder: AssetImage('assets/no-image.jpg'),
+                image: NetworkImage(
+                    'https://thesimpsonsrp.com/wp-content/uploads/2022/02/desencanto_temporada_4_poster-2.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
