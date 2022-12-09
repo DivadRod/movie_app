@@ -45,3 +45,38 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+#windows
+windows/
+**/windows/flutter/generated_plugins.cmake
+
+
+
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code related
+.classpath
+.project
+.settings/
+.vscode/
+
+
+# packages file containing multi-root paths
+.packages.generated
+
+
+# Android related
+**/android/**/gradle-wrapper.jar
+.gradle/
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/key.properties
+*.jks
