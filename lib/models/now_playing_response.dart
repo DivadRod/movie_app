@@ -14,7 +14,7 @@ class NowPlayingResponse {
 
   Dates dates;
   int page;
-  List<Movie?> results;
+  List<Movie> results;
   int totalPages;
   int totalResults;
 
@@ -27,7 +27,7 @@ class NowPlayingResponse {
         page: json["page"],
         results: json["results"] == null
             ? []
-            : List<Movie?>.from(json["results"]!.map((x) => Movie.fromJson(x))),
+            : List<Movie>.from(json["results"]!.map((x) => Movie.fromJson(x))),
         totalPages: json["total_pages"],
         totalResults: json["total_results"],
       );

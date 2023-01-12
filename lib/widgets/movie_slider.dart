@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import '../models/models.dart';
 
 class MovieSlider extends StatelessWidget {
+  final List<Movie> movies;
+  final String? title;
+
+  const MovieSlider({super.key, required this.movies, this.title});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -8,16 +14,21 @@ class MovieSlider extends StatelessWidget {
       height: 260,
       color: Colors.red,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Text('Populares',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal)),
+        if (title != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(title!,
+                style: const TextStyle(
+                    fontSize: 20, fontWeight: FontWeight.normal)),
+          ),
+        const SizedBox(
+          height: 5,
         ),
         Expanded(
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 20,
-              itemBuilder: (_, int index) => _MoviePoster()),
+              itemCount: movies.length,
+              itemBuilder: (_, int index) => _MoviePoster(movies[index])),
         ),
       ]),
     );
@@ -25,7 +36,10 @@ class MovieSlider extends StatelessWidget {
 }
 
 class _MoviePoster extends StatelessWidget {
-  @override
+  final Movie movie;
+
+  const _MoviePoster(this.movie);
+
   Widget build(BuildContext context) {
     return Container(
       width: 130,
@@ -38,25 +52,27 @@ class _MoviePoster extends StatelessWidget {
               arguments: 'movie-instance'),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: const FadeInImage(
-              placeholder: AssetImage('assets/no-image.jpg'),
-              image: NetworkImage(
-                  'https://elcomercio.pe/resizer/F0ksU1sSheshxKhk9k99Kv_HvqQ=/1200x675/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/AAMHBKZINBET5LFKRH7R6OKI5U.jpg'),
+            child: FadeInImage(
+              placeholder: const AssetImage('assets/no-image.jpg'),
+              image: NetworkImage(movie.fullPosterImg),
               width: 130,
               height: 190,
               fit: BoxFit.cover,
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Text(
-          'One Piece Film - Red - 2022',
+          movie.title,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
         ),
+        const SizedBox(
+          height: 5,
+        )
       ]),
     );
   }
