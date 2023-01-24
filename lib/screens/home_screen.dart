@@ -8,15 +8,15 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final moviesProvider = Provider.of<MovieProvider>(context);
+    final moviesProvider = Provider.of<MoviesProvider>(context);
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Peliculas - Series'),
+          title: const Text('Peliculas - Series'),
           elevation: 0,
           actions: [
             IconButton(
-              icon: Icon(Icons.search_off_outlined),
+              icon: const Icon(Icons.search_off_outlined),
               onPressed: () {},
             )
           ],
@@ -29,12 +29,10 @@ class HomeScreen extends StatelessWidget {
 
               //Listado horizontal de peliculas
               MovieSlider(
-                  movies: moviesProvider.onDisplayMovies,
-                  title: 'Ranking Semanal'),
-
-              const SizedBox(
-                height: 55,
-              )
+                movies: moviesProvider.onDisplayMovies,
+                title: 'Ranking Semanal',
+                onNextPage: () => moviesProvider.getPopularMovies(),
+              ),
             ],
           ),
         ));

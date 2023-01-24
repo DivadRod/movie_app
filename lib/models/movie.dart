@@ -34,15 +34,24 @@ class Movie {
   int voteCount;
 
   get fullPosterImg {
-    if (posterPath != null)
-      return 'https://image.tmdb.org/t/p/w500${this.posterPath}';
-
-    return 'https://i.stack.imgur.com/GNhxO.png';
+    if (posterPath != null) {
+      return 'https://image.tmdb.org/t/p/w500$posterPath';
+    } else {
+      return 'https://i.stack.imgur.com/GNhxO.png';
+    }
   }
 
-  factory Movie.fromRawJson(String str) => Movie.fromJson(json.decode(str));
+  get fullBackdropPath {
+    if (posterPath != null) {
+      return 'https://image.tmdb.org/t/p/w500$backdropPath';
+    } else {
+      return 'https://i.stack.imgur.com/GNhxO.png';
+    }
+  }
 
-  factory Movie.fromJson(Map<String, dynamic> json) => Movie(
+  factory Movie.fromRawJson(String str) => Movie.fromMap(json.decode(str));
+
+  factory Movie.fromMap(Map<String, dynamic> json) => Movie(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
