@@ -6,20 +6,18 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Movie movie = ModalRoute.of(context)!.settings.arguments as Movie;
-    //print(movie.title);
+    print(movie.title);
 
     return Scaffold(
         body: CustomScrollView(
       slivers: [
-        _CustomAppBar(),
+        _CustomAppBar(
+          movie: movie,
+        ),
         SliverList(
             delegate: SliverChildListDelegate([
-          _PosterAndTitle(),
-          _Overview(),
-          _Overview(),
-          _Overview(),
-          _Overview(),
-          _Overview(),
+          _PosterAndTitle(movie: movie),
+          _Overview(movie: movie),
           CastingCards()
         ]))
       ],
@@ -28,6 +26,10 @@ class DetailsScreen extends StatelessWidget {
 }
 
 class _CustomAppBar extends StatelessWidget {
+  final Movie movie;
+
+  const _CustomAppBar({required this.movie});
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -41,16 +43,16 @@ class _CustomAppBar extends StatelessWidget {
         title: Container(
             width: double.infinity,
             alignment: Alignment.bottomCenter,
-            padding: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
             color: Colors.black12,
-            child: const Text(
-              'Kimetsu no Yaiba',
-              style: TextStyle(fontSize: 16),
+            child: Text(
+              movie.title,
+              style: const TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
             )),
-        background: const FadeInImage(
-          placeholder: AssetImage('assets/loading.gif'),
-          image: NetworkImage(
-              'https://demonslayer-hinokami.sega.com/img/purchase/digital-standard-es.jpg'),
+        background: FadeInImage(
+          placeholder: const AssetImage('assets/loading.gif'),
+          image: NetworkImage(movie.fullBackdropPath),
           fit: BoxFit.cover,
         ),
       ),
@@ -59,9 +61,14 @@ class _CustomAppBar extends StatelessWidget {
 }
 
 class _PosterAndTitle extends StatelessWidget {
+  final Movie movie;
+
+  const _PosterAndTitle({required this.movie});
+
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
 
     return Container(
       margin: const EdgeInsets.only(top: 20),
@@ -70,48 +77,50 @@ class _PosterAndTitle extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: const FadeInImage(
-              placeholder: AssetImage('assets/loading.gif'),
-              image: NetworkImage(
-                  'https://www.cinepremiere.com.mx/wp-content/uploads/2021/03/Demon-Slayer-Netflix-900x491.jpg'),
+            child: FadeInImage(
+              placeholder: const AssetImage('assets/loading.gif'),
+              image: NetworkImage(movie.fullPosterImg),
               height: 90,
             ),
           ),
           const SizedBox(
             width: 20,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Kimetsu no Yaiba',
-                style: textTheme.headline6,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-              Text(
-                '3 temporadas',
-                style: textTheme.subtitle1,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-              Row(
-                children: [
-                  const Icon(Icons.star, size: 15, color: Colors.yellow),
-                  const Icon(Icons.star, size: 15, color: Colors.yellow),
-                  const Icon(Icons.star, size: 15, color: Colors.yellow),
-                  const Icon(Icons.star, size: 15, color: Colors.yellow),
-                  const Icon(Icons.star_half, size: 15, color: Colors.yellow),
-                  const SizedBox(width: 15),
-                  Text(
-                    'votes: 9.78k',
-                    style: Theme.of(context).textTheme.caption,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                ],
-              )
-            ],
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: size.width - 150),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  movie.title,
+                  style: textTheme.headline6,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                Text(
+                  movie.originalTitle,
+                  style: textTheme.subtitle2,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                Row(
+                  children: [
+                    const Icon(Icons.star, size: 15, color: Colors.yellow),
+                    const Icon(Icons.star, size: 15, color: Colors.yellow),
+                    const Icon(Icons.star, size: 15, color: Colors.yellow),
+                    const Icon(Icons.star, size: 15, color: Colors.yellow),
+                    const Icon(Icons.star_half, size: 15, color: Colors.yellow),
+                    const SizedBox(width: 15),
+                    Text(
+                      '${movie.voteAverage}',
+                      style: Theme.of(context).textTheme.caption,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ],
+                )
+              ],
+            ),
           )
         ],
       ),
@@ -120,14 +129,18 @@ class _PosterAndTitle extends StatelessWidget {
 }
 
 class _Overview extends StatelessWidget {
+  final Movie movie;
+
+  const _Overview({required this.movie});
+
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      child: const Text(
-        'Kimetsu no Yaiba, también conocida bajo su nombre en inglés Demon Slayer, es una serie de manga escrita e ilustrada por Koyoharu Gotōge, cuya publicación comenzó el 15 de febrero de 2016 en la revista semanal Shūkan Shōnen Jump de la editorial Shūeisha.',
+      child: Text(
+        '${movie.overview}',
         textAlign: TextAlign.justify,
       ),
     );
