@@ -72,12 +72,18 @@ class Cast {
         name: json["name"],
         originalName: json["original_name"],
         popularity: json["popularity"].toDouble(),
+        // ignore: prefer_if_null_operators
         profilePath: json["profile_path"] == null ? null : json["profile_path"],
+        // ignore: prefer_if_null_operators
         castId: json["cast_id"] == null ? null : json["cast_id"],
+        // ignore: prefer_if_null_operators
         character: json["character"] == null ? null : json["character"],
         creditId: json["credit_id"],
+        // ignore: prefer_if_null_operators
         order: json["order"] == null ? null : json["order"],
+        // ignore: prefer_if_null_operators
         department: json["department"] == null ? null : json["department"],
+        // ignore: prefer_if_null_operators
         job: json["job"] == null ? null : json["job"],
       );
 }
