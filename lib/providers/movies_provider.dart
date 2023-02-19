@@ -2,10 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_app/models/popular_response.dart';
-
 import '../helpers/debouncer.dart';
-import '../models/credits_response.dart';
 import '../models/models.dart';
 import '../models/search_response.dart';
 
@@ -77,6 +74,7 @@ class MoviesProvider extends ChangeNotifier {
   }
 
   Future<List<Cast>> getMovieCast(int movieId) async {
+    //Si contiene la llave containsKey
     if (moviesCast.containsKey(movieId)) return moviesCast[movieId]!;
 
     final jsonData = await _getJsonData('3/movie/$movieId/credits');
