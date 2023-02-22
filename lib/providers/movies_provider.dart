@@ -38,8 +38,15 @@ class MoviesProvider extends ChangeNotifier {
     #####################################################
   */
   Future<String> _getJsonData(String endpoint, [int page = 1]) async {
-    final url = Uri.https(_baseUrl, endpoint,
-        {'api_key': _apiKey, 'language': _language, 'page': '$page'});
+    final url = Uri.https(
+      _baseUrl,
+      endpoint,
+      {
+        'api_key': _apiKey,
+        'language': _language,
+        'page': '$page',
+      },
+    );
 
     // Await the http get response, then decode the json-formatted response.
     final response = await http.get(url);
@@ -86,8 +93,11 @@ class MoviesProvider extends ChangeNotifier {
   }
 
   Future<List<Movie>> searchMovies(String query) async {
-    final url = Uri.https(_baseUrl, '3/search/movie',
-        {'api_key': _apiKey, 'language': _language, 'query': query});
+    final url = Uri.https(_baseUrl, '3/search/movie', {
+      'api_key': _apiKey,
+      'language': _language,
+      'query': query,
+    });
 
     final response = await http.get(url);
     final searchResponse = SearchResponse.fromJson(response.body);
