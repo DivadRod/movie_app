@@ -107,13 +107,15 @@ class MoviesProvider extends ChangeNotifier {
 
   void getSuggestionsByQuery(String searchTerm) {
     debouncer.value = '';
+
+    //CUANDO PASE LOS 500MS
     debouncer.onValue = (value) async {
       // print('Tenemos valor a buscar: $value');
       final results = await searchMovies(value);
       _suggestionStreamContoller.add(results);
     };
 
-    final timer = Timer.periodic(Duration(milliseconds: 300), (_) {
+    final timer = Timer.periodic(const Duration(milliseconds: 300), (_) {
       debouncer.value = searchTerm;
     });
 

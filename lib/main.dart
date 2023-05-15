@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       initialRoute: 'home',
       routes: {
         'home': (_) => const HomeScreen(),
-        'details': (_) => DetailsScreen()
+        'details': (_) => const DetailsScreen()
       },
       theme: ThemeData.dark().copyWith(
         appBarTheme: const AppBarTheme(color: Colors.red),

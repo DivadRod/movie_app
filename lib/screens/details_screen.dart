@@ -3,6 +3,8 @@ import 'package:movie_app/models/models.dart';
 import 'package:movie_app/widgets/widgets.dart';
 
 class DetailsScreen extends StatelessWidget {
+  const DetailsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final Movie movie = ModalRoute.of(context)!.settings.arguments as Movie;
@@ -15,9 +17,13 @@ class DetailsScreen extends StatelessWidget {
         ),
         SliverList(
             delegate: SliverChildListDelegate([
-          _PosterAndTitle(movie: movie),
-          _Overview(movie: movie),
-          CastingCards(movie.id)
+          Wrap(
+            children: [
+              _PosterAndTitle(movie: movie),
+              _Overview(movie: movie),
+              CastingCards(movie.id)
+            ],
+          )
         ]))
       ],
     ));
@@ -44,10 +50,12 @@ class _CustomAppBar extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
             color: Colors.black12,
-            child: Text(
-              movie.title,
-              style: const TextStyle(fontSize: 16),
-              textAlign: TextAlign.center,
+            child: Expanded(
+              child: Text(
+                movie.title,
+                style: const TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
             )),
         background: FadeInImage(
           placeholder: const AssetImage('assets/loading.gif'),
@@ -70,16 +78,19 @@ class _PosterAndTitle extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Container(
-      margin: const EdgeInsets.only(top: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.only(top: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: FadeInImage(
-              placeholder: const AssetImage('assets/loading.gif'),
-              image: NetworkImage(movie.fullPosterImg),
-              height: 90,
+          Hero(
+            tag: movie.heroId!,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: FadeInImage(
+                placeholder: const AssetImage('assets/loading.gif'),
+                image: NetworkImage(movie.fullPosterImg),
+                height: 150,
+              ),
             ),
           ),
           const SizedBox(
@@ -87,39 +98,42 @@ class _PosterAndTitle extends StatelessWidget {
           ),
           ConstrainedBox(
             constraints: BoxConstraints(maxWidth: size.width - 150),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  movie.title,
-                  style: textTheme.headline6,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-                Text(
-                  movie.originalTitle,
-                  style: textTheme.subtitle2,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-                Row(
-                  children: [
-                    const Icon(Icons.star, size: 15, color: Colors.yellow),
-                    const Icon(Icons.star, size: 15, color: Colors.yellow),
-                    const Icon(Icons.star, size: 15, color: Colors.yellow),
-                    const Icon(Icons.star, size: 15, color: Colors.yellow),
-                    const Icon(Icons.star_half, size: 15, color: Colors.yellow),
-                    const SizedBox(width: 15),
-                    Text(
-                      '${movie.voteAverage}',
-                      style: Theme.of(context).textTheme.caption,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ],
-                )
-              ],
-            ),
+            child: Wrap(children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    movie.title,
+                    style: textTheme.titleLarge,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                  Text(
+                    movie.originalTitle,
+                    style: textTheme.titleSmall,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, size: 15, color: Colors.yellow),
+                      const Icon(Icons.star, size: 15, color: Colors.yellow),
+                      const Icon(Icons.star, size: 15, color: Colors.yellow),
+                      const Icon(Icons.star, size: 15, color: Colors.yellow),
+                      const Icon(Icons.star_half,
+                          size: 15, color: Colors.yellow),
+                      const SizedBox(width: 15),
+                      Text(
+                        '${movie.voteAverage}',
+                        style: Theme.of(context).textTheme.bodySmall,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ]),
           )
         ],
       ),
@@ -134,13 +148,14 @@ class _Overview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    TextTheme textTheme = Theme.of(context).textTheme;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child: Text(
-        '${movie.overview}',
+        movie.overview,
         textAlign: TextAlign.justify,
+        style: textTheme.bodyMedium,
       ),
     );
   }

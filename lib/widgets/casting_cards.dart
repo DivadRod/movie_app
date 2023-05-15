@@ -9,7 +9,7 @@ import '../models/credits_response.dart';
 class CastingCards extends StatelessWidget {
   final int movieId;
 
-  CastingCards(this.movieId);
+  const CastingCards(this.movieId, {super.key});
 
   @override
   Widget build(BuildContext context) {

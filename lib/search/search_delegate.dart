@@ -32,17 +32,16 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Text('buildResults');
+    return const Text('buildResults');
   }
 
   Widget _emptyContainer() {
-    return Container(
-      child: const Center(
-          child: Icon(
-        Icons.movie_creation_outlined,
-        size: 100,
-      )),
-    );
+    return const Center(
+        child: Icon(
+      Icons.movie_creation_outlined,
+      color: Colors.black38,
+      size: 130,
+    ));
   }
 
   @override
@@ -63,28 +62,34 @@ class MovieSearchDelegate extends SearchDelegate {
 
         return ListView.builder(
           itemCount: movies.length,
-          itemBuilder: (_, int index) => _MovieItem(movies[index]),
+          itemBuilder: (_, int index) => _MovieItemFiltered(movies[index]),
         );
       },
     );
   }
 }
 
-class _MovieItem extends StatelessWidget {
+class _MovieItemFiltered extends StatelessWidget {
   final Movie movie;
 
-  const _MovieItem(this.movie);
+  const _MovieItemFiltered(this.movie);
 
   @override
   Widget build(BuildContext context) {
+    movie.heroId = 'search-${movie.id}';
+
     return ListTile(
-      leading: FadeInImage(
-        placeholder: const AssetImage('assets/no-images.jpg'),
-        image: NetworkImage(movie.fullPosterImg),
-        width: 50,
-        fit: BoxFit.contain,
+      leading: Hero(
+        tag: movie.heroId!,
+        child: FadeInImage(
+          placeholder: const AssetImage('assets/no-image.jpg'),
+          image: NetworkImage(movie.fullPosterImg),
+          width: 50,
+          fit: BoxFit.contain,
+        ),
       ),
       title: Text(movie.title),
+      subtitle: Text(movie.originalTitle),
       onTap: () {
         Navigator.pushNamed(context, 'details', arguments: movie);
       },
